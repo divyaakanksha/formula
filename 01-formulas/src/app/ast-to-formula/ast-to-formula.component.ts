@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
+// enum created for the operators in a binary expression
 enum operator {
   DIVISION = "/",
   MULTIPLICATION = "*",
@@ -22,6 +23,7 @@ export class AstToFormulaComponent implements OnInit {
   ngOnInit(): void {}
 
   evalAST(ast: any): string {
+    // push the value only for the first node
     if (this.flag === ast.type) {
       this.expression.push(
         this.evalAST(ast.left) +
@@ -36,7 +38,9 @@ export class AstToFormulaComponent implements OnInit {
       return ast.name;
     } else if (ast.type == "UNARY") {
       return "(-" + ast.name + ")";
-    } else if (
+    }
+    // For binary expression operation done between 2 leaves
+    else if (
       ast.type == "ADDITION" ||
       ast.type == "SUBTRACTION" ||
       ast.type == "MULTIPLICATION" ||
@@ -47,7 +51,9 @@ export class AstToFormulaComponent implements OnInit {
         this.operator[ast.type] +
         this.evalAST(ast.right)
       );
-    } else if (ast.type === "PAREN") {
+    }
+    // For Paranthesis, we have a child ast again which expresion
+    else if (ast.type === "PAREN") {
       if (ast.expression.type === "ADDITION") {
         let val =
           "(" +
@@ -91,7 +97,6 @@ export class AstToFormulaComponent implements OnInit {
         let val = ast.name + "(" + this.evalAST(ast.expression) + ")";
       }
     } else if (ast.type === "FUNCTION") {
-      // this.getFuncVal(ast);
       let val: any;
       ast.arguments.forEach((value: any) => {
         if (value.type === "ADDITION") {

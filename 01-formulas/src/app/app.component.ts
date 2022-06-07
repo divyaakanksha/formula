@@ -29,13 +29,8 @@ export class AppComponent {
 
   convertAstToFormula() {
     console.log("converting ast to string...");
-
-    console.log(Parser);
     const ast = JSON.parse(this.ast);
-    // this.visualizerOutput = Parser.evaluate(val);
     this.astToFormulaRef.flag = ast.type;
-
     this.astToFormulaRef.evalAST(ast);
-    console.log(ast);
   }
 }
